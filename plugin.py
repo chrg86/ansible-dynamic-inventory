@@ -3,8 +3,6 @@ A simple inventory plugin that uses Nmap to get the list of hosts
 Jose Vicente Nunez (kodegeek.com@protonmail.com)
 """
 
-import os
-# The imports below are the ones required for an Ansible plugin
 from ansible.errors import AnsibleParserError
 from ansible.plugins.inventory import BaseInventoryPlugin, Cacheable, Constructable
 
@@ -27,3 +25,8 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
     def __init__(self):
         super(InventoryModule, self).__init__()
         self.plugin = None
+
+    def verify_file(self, path: str):
+        if super(InventoryModule, self).verify_file(path):
+            return path.endswith('yaml') or path.endswith('yml')
+        return False
